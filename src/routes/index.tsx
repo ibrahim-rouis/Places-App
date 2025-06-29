@@ -1,20 +1,30 @@
+import { useAuthListener } from '@/hooks/useAuthListener';
 import AuthLayout from '@/layouts/AuthLayout';
 import MainLayout from '@/layouts/MainLayout';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import { BrowserRouter, Route, Routes } from 'react-router';
+import RouteGuard from './RouteGuard';
 
 function RoutesConfig() {
+  useAuthListener();
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+        <Route
+          element={<RouteGuard requireAuth={true} redirectTo="/auth/login" />}
+        >
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
         </Route>
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+        <Route element={<RouteGuard requireAuth={false} redirectTo="/" />}>
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
