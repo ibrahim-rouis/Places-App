@@ -2,10 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './services/firebase-services.ts';
 import './index.css';
-import App from './App.tsx';
+import RoutesConfig from './routes/index.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <RoutesConfig />
   </StrictMode>,
 );
