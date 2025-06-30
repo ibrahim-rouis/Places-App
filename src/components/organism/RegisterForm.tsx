@@ -12,7 +12,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
-import { loginUser } from '@/services/auth-services';
+import { registerUser } from '@/services/auth-services';
 import { Toaster, toast } from 'sonner';
 
 const IFormDataSchema = z.object({
@@ -22,31 +22,39 @@ const IFormDataSchema = z.object({
   password: z
     .string({ message: 'Password is required' })
     .min(6, { message: 'Password must be at least 6 characters long' }),
+  confirmPassword: z
+    .string({ message: 'Password is required' })
+    .min(6, { message: 'Password must be at least 6 characters long' }),
 });
 
 type IFormData = z.infer<typeof IFormDataSchema>;
 
-function LoginForm() {
+function RegisterForm() {
   const form = useForm({
     resolver: zodResolver(IFormDataSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
-  // Singning in state
+  // Singning up state
   const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<IFormData> = useCallback((data) => {
+    if (data.password !== data.confirmPassword) {
+      form.setError('confirmPassword', {
+        message: "Confirm password doesn't match",
+      });
+      return;
+    }
     setLoading(true);
-    loginUser(data.email, data.password)
+    registerUser(data.email, data.password)
       .catch((e) => {
         console.error(e);
-        if (e.code == 'auth/wrong-password') {
-          toast.error('Wrong password');
-        } else if (e.code == 'auth/user-not-found') {
-          toast.error('Email not found');
+        if (e.code == 'auth/email-already-in-use') {
+          toast.error('Email already registered');
         } else {
           toast.error('Unknown error occured.');
         }
@@ -84,6 +92,23 @@ function LoginForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="mt-3">
+              {/* <FormLabel>Password</FormLabel> */}
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Confirm password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button
           type="submit"
           className="mt-5 w-full px-6 py-5"
@@ -95,11 +120,11 @@ function LoginForm() {
               Please wait
             </div>
           ) : (
-            'Sign in'
+            'Sign Up'
           )}
         </Button>
       </form>
     </Form>
   );
 }
-export default LoginForm;
+export default RegisterForm;
