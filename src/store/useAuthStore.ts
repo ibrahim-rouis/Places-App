@@ -15,7 +15,7 @@ type Actions = {
 export const useAuthStore = create<State & Actions>()(
   immer((set) => ({
     user: null,
-    loading: false,
+    loading: true,
     setUser: (user: User | null) =>
       set((state) => {
         state.user = user;

@@ -1,8 +1,5 @@
 import AppTitle from '@/components/molecules/AppTitle';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import LoginForm from '@/components/organism/LoginForm';
 import { Link } from 'react-router';
 
 function Login() {
@@ -33,23 +30,7 @@ function Login() {
         </p>
       </div>
       <div className="mt-6 mb-10">
-        <form className="mt-5">
-          <div>
-            <Input type="email" placeholder="Email" />
-          </div>
-          <div className="mt-3">
-            <Input type="password" placeholder="Password" />
-          </div>
-          <div className="mt-4 flex items-start gap-3">
-            <Checkbox id="terms" defaultChecked />
-            <Label htmlFor="terms">Remember me</Label>
-          </div>
-          <div className="mt-5 ml-1">
-            <Button type="submit" variant="default" className="px-6 py-5">
-              Sign In
-            </Button>
-          </div>
-        </form>
+        <LoginForm />
       </div>
     </div>
   );
