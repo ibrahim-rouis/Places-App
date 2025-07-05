@@ -1,3 +1,4 @@
+import Navbar from '@/components/organism/Navbar';
 import { Button } from '@/components/ui/button';
 import { useLogout } from '@/hooks/useLogout';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -7,13 +8,8 @@ function MainLayout() {
   const logout = useLogout();
   const email = useAuthStore((state) => state.user?.email);
   return (
-    <div>
-      <p>
-        <p>Welcome {email}</p>
-        <Button onClick={logout} variant="destructive">
-          Logout
-        </Button>
-      </p>
+    <div className="flex flex-row gap-2">
+      <Navbar />
       <Outlet />
     </div>
   );

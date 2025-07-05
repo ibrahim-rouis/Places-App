@@ -1,10 +1,14 @@
 import { TreePalm } from 'lucide-react';
 
-function AppTitle() {
+interface IProps {
+  iconOnly?: boolean;
+}
+
+function AppTitle({ iconOnly = false }: IProps) {
   return (
     <div className="flex items-center">
       <TreePalm className="size-30 shrink-0 md:size-min" />
-      <h1 className="shrink-0">Places App</h1>
+      {!iconOnly && <h1 className="shrink-0">Places App</h1>}
     </div>
   );
 }

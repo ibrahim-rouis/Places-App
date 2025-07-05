@@ -6,6 +6,8 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import RouteGuard from './RouteGuard';
+import Explore from '@/pages/Explore';
+import Favorites from '@/pages/Favorites';
 
 function RoutesConfig() {
   useAuthListener();
@@ -18,6 +20,8 @@ function RoutesConfig() {
         >
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/favorites" element={<Favorites />} />
           </Route>
         </Route>
         <Route element={<RouteGuard requireAuth={false} redirectTo="/" />}>

@@ -13,5 +13,5 @@ export const auth = getAuth(app);
 // Connect to emulators in development mode
 if (import.meta.env.DEV) {
   connectFirestoreEmulator(db, '127.0.0.1', 8080);
-  connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
 }
