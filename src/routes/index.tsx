@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import RouteGuard from './RouteGuard';
 import Explore from '@/pages/Explore';
 import Favorites from '@/pages/Favorites';
+import CreatePlace from '@/pages/CreatePlace';
 
 function RoutesConfig() {
   useAuthListener();
@@ -22,6 +23,7 @@ function RoutesConfig() {
             <Route path="/" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/create" element={<CreatePlace />} />
           </Route>
         </Route>
         <Route element={<RouteGuard requireAuth={false} redirectTo="/" />}>

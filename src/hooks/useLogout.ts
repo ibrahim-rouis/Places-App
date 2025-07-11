@@ -1,10 +1,9 @@
-import { auth } from '@/services/firebase-services';
-import { signOut } from 'firebase/auth';
+import { logoutUser } from '@/services/auth-services';
 import { useCallback } from 'react';
 
 export const useLogout = () => {
   const callaback = useCallback(() => {
-    return signOut(auth);
+    return logoutUser();
   }, []);
 
   return callaback;

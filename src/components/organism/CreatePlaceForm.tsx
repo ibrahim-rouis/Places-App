@@ -12,43 +12,40 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
-import { registerUser } from '@/services/auth-services';
 import { Toaster, toast } from 'sonner';
-import { registerSchema } from '@/schemas/Auth';
+import { createPlaceSchema } from '@/schemas/Place';
+import { createPlace } from '@/services/places-services';
+import { Textarea } from '../ui/textarea';
+import { useNavigate } from 'react-router';
 
-type IFormData = z.infer<typeof registerSchema>;
+type IFormData = z.infer<typeof createPlaceSchema>;
 
-function RegisterForm() {
+function CreatePlaceForm() {
   const form = useForm({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(createPlaceSchema),
     defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
+      title: '',
+      description: '',
+      location: '',
     },
   });
 
-  // Singning up state
+  // create place pending state
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<IFormData> = useCallback((data) => {
-    if (data.password !== data.confirmPassword) {
-      form.setError('confirmPassword', {
-        message: "Confirm password doesn't match",
-      });
-      return;
-    }
     setLoading(true);
-    registerUser(data.email, data.password)
+    createPlace(data)
+      .then(() => navigate('/'))
       .catch((e) => {
         console.error(e);
-        if (e.code == 'auth/email-already-in-use') {
-          toast.error('Email already registered');
-        } else {
-          toast.error('Unknown error occured.');
-        }
+        toast.error('Failed to create place.');
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -57,12 +54,11 @@ function RegisterForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5">
         <FormField
           control={form.control}
-          name="email"
+          name="title"
           render={({ field }) => (
             <FormItem className="mt-3">
-              {/* <FormLabel>Email</FormLabel> */}
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input placeholder="Title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,12 +66,15 @@ function RegisterForm() {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="description"
           render={({ field }) => (
             <FormItem className="mt-3">
-              {/* <FormLabel>Password</FormLabel> */}
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Textarea
+                  placeholder="Tell us about the place"
+                  className="h-30 resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,15 +82,35 @@ function RegisterForm() {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="location"
           render={({ field }) => (
             <FormItem className="mt-3">
-              {/* <FormLabel>Password</FormLabel> */}
+              <FormControl>
+                <Input placeholder="Location" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="images"
+          render={({ field: { onChange, name, ref } }) => (
+            <FormItem className="mt-3">
               <FormControl>
                 <Input
-                  type="password"
-                  placeholder="Confirm password"
-                  {...field}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  placeholder="Images"
+                  name={name}
+                  ref={ref}
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      onChange(Array.from(files));
+                    }
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -109,11 +128,11 @@ function RegisterForm() {
               Please wait
             </div>
           ) : (
-            'Sign Up'
+            'Create'
           )}
         </Button>
       </form>
     </Form>
   );
 }
-export default RegisterForm;
+export default CreatePlaceForm;

@@ -5,7 +5,9 @@ function MainLayout() {
   return (
     <div className="flex flex-row gap-2">
       <Navbar />
-      <Outlet />
+      <div className="max-h-screen w-full overflow-y-auto p-2 md:p-4">
+        <Outlet />
+      </div>
     </div>
   );
 }
