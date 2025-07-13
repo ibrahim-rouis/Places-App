@@ -1,3 +1,4 @@
+import ViewLoading from '@/components/molecules/ViewLoading';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMemo } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
@@ -14,7 +15,7 @@ function RouteGuard({ requireAuth, redirectTo }: RouteGuardProps) {
   const location = useLocation();
 
   // TODO: Make a loading component
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <ViewLoading />;
 
   if (!isLoggedIn && requireAuth) {
     return <Navigate to={redirectTo} state={{ from: location }} replace />;

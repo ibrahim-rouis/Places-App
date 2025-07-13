@@ -7,14 +7,22 @@ import {
 } from '@/components/ui/card';
 import type { Place } from '@/schemas/Place';
 import { MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 interface IProps {
   place: Place;
 }
 
 function PlaceCard({ place }: IProps) {
+  const navigate = useNavigate();
   return (
-    <Card className="aspect-square">
+    <Card
+      onClick={() => navigate(`/place/${place.id}`)}
+      className="hover:cursor-pointer"
+    >
+      <CardContent>
+        <img className="aspect-square object-cover" src={place.images[0]} />
+      </CardContent>
       <CardHeader>
         <CardTitle className="text-lg">{place.title}</CardTitle>
         <CardDescription>
@@ -25,9 +33,6 @@ function PlaceCard({ place }: IProps) {
           </div>
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <img className="aspect-square object-cover" src={place.images[0]} />
-      </CardContent>
     </Card>
   );
 }

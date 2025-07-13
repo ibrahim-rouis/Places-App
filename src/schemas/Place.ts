@@ -56,6 +56,8 @@ const imagesUrlsSchema = z.array(z.string());
 const timeStampSchema = z.instanceof(Timestamp);
 const createdAtSchema = timeStampSchema;
 const updatedAtSchema = timeStampSchema.nullable();
+const createdBySchema = z.string();
+const placeIdSchema = z.string();
 
 export const createPlaceSchema = z.object({
   title: titleSchema,
@@ -65,10 +67,12 @@ export const createPlaceSchema = z.object({
 });
 
 export const placeDataSchema = z.object({
+  id: placeIdSchema,
   title: titleSchema,
   description: descriptionSchema,
   location: locationSchema,
   images: imagesUrlsSchema,
+  createdBy: createdBySchema,
   createdAt: createdAtSchema,
   updatedAt: updatedAtSchema,
   avgRating: z.number().nullable().optional(),

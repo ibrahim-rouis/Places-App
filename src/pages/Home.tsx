@@ -1,7 +1,6 @@
 import ButtonLink from '@/components/molecules/ButtonLink';
 import GoToCreate from '@/components/molecules/GoToCreate';
 import usePlacesQuery from '@/hooks/usePlacesQuery';
-import { BadgeAlert, CloudAlert, LoaderCircle } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -11,6 +10,9 @@ import {
 } from '@/components/ui/carousel';
 import PlaceCard from '@/components/molecules/PlaceCard';
 import Autoplay from 'embla-carousel-autoplay';
+import ViewLoading from '@/components/molecules/ViewLoading';
+import ViewEmpty from '@/components/molecules/ViewEmpty';
+import ViewError from '@/components/molecules/ViewError';
 
 function Home() {
   const newPlaces = usePlacesQuery({ sortBy: 'NEW' });
@@ -26,9 +28,9 @@ function Home() {
             <ButtonLink to="/explore" title="Show more" />
           </div>
           <div className="md:px-10">
-            {newPlaces.loading && ViewLoading()}
-            {newPlaces.error != null && ViewError()}
-            {newPlaces.data && newPlaces.data.length == 0 && ViewEmpty()}
+            {newPlaces.loading && <ViewLoading />}
+            {newPlaces.error != null && <ViewError />}
+            {newPlaces.data && newPlaces.data.length == 0 && <ViewEmpty />}
             {newPlaces.data && newPlaces.data.length > 0 && (
               <Carousel
                 className="w-full"
@@ -42,9 +44,9 @@ function Home() {
                 ]}
               >
                 <CarouselContent>
-                  {newPlaces.data.map((place, index) => (
+                  {newPlaces.data.map((place) => (
                     <CarouselItem
-                      key={index}
+                      key={place.id}
                       className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
                     >
                       <PlaceCard place={place} />
@@ -63,11 +65,11 @@ function Home() {
             <ButtonLink to="/" title="Show more" />
           </div>
           <div className="md:px-10">
-            {topRatedPlaces.loading && ViewLoading()}
-            {topRatedPlaces.error != null && ViewError()}
-            {topRatedPlaces.data &&
-              topRatedPlaces.data.length == 0 &&
-              ViewEmpty()}
+            {topRatedPlaces.loading && <ViewLoading />}
+            {topRatedPlaces.error != null && <ViewError />}
+            {topRatedPlaces.data && topRatedPlaces.data.length == 0 && (
+              <ViewEmpty />
+            )}
             {topRatedPlaces.data && topRatedPlaces.data.length > 0 && (
               <Carousel
                 className="w-full"
@@ -81,9 +83,9 @@ function Home() {
                 ]}
               >
                 <CarouselContent>
-                  {topRatedPlaces.data.map((place, index) => (
+                  {topRatedPlaces.data.map((place) => (
                     <CarouselItem
-                      key={index}
+                      key={place.id}
                       className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
                     >
                       <PlaceCard place={place} />
@@ -102,11 +104,11 @@ function Home() {
             <ButtonLink to="/" title="Show more" />
           </div>
           <div className="md:px-10">
-            {mostViewedPlaces.loading && ViewLoading()}
-            {mostViewedPlaces.error != null && ViewError()}
-            {mostViewedPlaces.data &&
-              mostViewedPlaces.data.length == 0 &&
-              ViewEmpty()}
+            {mostViewedPlaces.loading && <ViewLoading />}
+            {mostViewedPlaces.error != null && <ViewError />}
+            {mostViewedPlaces.data && mostViewedPlaces.data.length == 0 && (
+              <ViewEmpty />
+            )}
             {mostViewedPlaces.data && mostViewedPlaces.data.length > 0 && (
               <Carousel
                 className="w-full"
@@ -120,9 +122,9 @@ function Home() {
                 ]}
               >
                 <CarouselContent>
-                  {mostViewedPlaces.data.map((place, index) => (
+                  {mostViewedPlaces.data.map((place) => (
                     <CarouselItem
-                      key={index}
+                      key={place.id}
                       className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
                     >
                       <PlaceCard place={place} />
@@ -140,28 +142,3 @@ function Home() {
   );
 }
 export default Home;
-function ViewLoading() {
-  return (
-    <div className="flex h-32 w-full items-center justify-center gap-2">
-      <LoaderCircle className="size-16 animate-spin" />
-    </div>
-  );
-}
-
-function ViewError() {
-  return (
-    <div className="text-destructive flex h-32 flex-col items-center justify-center gap-2">
-      <BadgeAlert className="size-8 shrink-0" />
-      <p className="text-center">Something went wrong.</p>
-    </div>
-  );
-}
-
-function ViewEmpty() {
-  return (
-    <div className="text-foreground flex h-32 flex-col items-center justify-center gap-2">
-      <CloudAlert className="size-8 shrink-0" />
-      <p className="text-center">Nothing to show here.</p>
-    </div>
-  );
-}

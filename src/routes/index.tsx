@@ -9,6 +9,7 @@ import RouteGuard from './RouteGuard';
 import Explore from '@/pages/Explore';
 import Favorites from '@/pages/Favorites';
 import CreatePlace from '@/pages/CreatePlace';
+import Place from '@/pages/Place';
 
 function RoutesConfig() {
   useAuthListener();
@@ -24,6 +25,7 @@ function RoutesConfig() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/create" element={<CreatePlace />} />
+            <Route path="/place/:id" element={<Place />} />
           </Route>
         </Route>
         <Route element={<RouteGuard requireAuth={false} redirectTo="/" />}>

@@ -1,6 +1,6 @@
 import { createPlaceSchema, imageFilesListSchema } from '@/schemas/Place';
 import { z } from 'zod';
-import { db, storage } from './firebase-services';
+import { auth, db, storage } from './firebase-services';
 import {
   addDoc,
   collection,
@@ -39,6 +39,7 @@ export const createPlace = async (place: PlaceFormData) => {
     title: place.title,
     description: place.description,
     location: place.location,
+    createdBy: auth.currentUser!.uid,
     createdAt: serverTimestamp(),
     updatedAt: null,
   });

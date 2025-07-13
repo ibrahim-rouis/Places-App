@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type SortType = 'NEW' | 'TOP' | 'POPULAR';
 
@@ -22,7 +22,6 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
   const [data, setData] = useState<Array<Place> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown | null>(null);
-  const [_refresh, setRefresh] = useState<number>(0);
 
   useEffect(() => {
     const fetch = async () => {
@@ -45,7 +44,13 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
           );
         }
         const docs = await getDocs(q);
-        setData(docs.docs.map((place) => placeDataSchema.parse(place.data())));
+        setData(
+          docs.docs.map((place) => {
+            const data = place.data();
+            data.id = place.id;
+            return placeDataSchema.parse(data);
+          }),
+        );
       } catch (error) {
         console.error(error);
         setError(error);
@@ -54,18 +59,10 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
       }
     };
 
-    setError(null);
-    setLoading(false);
-    setData(null);
     fetch();
-  }, [_refresh, _sortBy]);
+  }, [_sortBy]);
 
-  const refresh = useCallback(
-    () => (loading ? null : setRefresh((state) => state + 1)),
-    [loading],
-  );
-
-  return { data, loading, error, refresh };
+  return { data, loading, error };
 };
 
 export default usePlacesQuery;
