@@ -1,7 +1,7 @@
 import ViewError from '@/components/molecules/ViewError';
 import ViewLoading from '@/components/molecules/ViewLoading';
 import usePlace from '@/hooks/usePlace';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import Autoplay from 'embla-carousel-autoplay';
 import {
@@ -13,11 +13,16 @@ import {
 } from '@/components/ui/carousel';
 import ViewEmpty from '@/components/molecules/ViewEmpty';
 import { MapPin } from 'lucide-react';
+import { Rating } from '@smastrom/react-rating';
+import useRating from '@/hooks/useRating';
 
 function Place() {
   const params = useParams();
   const placeID = useMemo(() => params.id!, [params]);
   const place = usePlace(placeID);
+  const [rating, setRating] = useRating(placeID);
+  useState;
+
   if (place.loading) {
     return <ViewLoading />;
   } else if (place.error) {
@@ -61,6 +66,11 @@ function Place() {
                 <p>{place.data.location}</p>
               </div>
             </div>
+            <Rating
+              className="max-w-36 md:max-w-50"
+              value={rating}
+              onChange={(rating: number) => setRating(rating)}
+            />
             <p className="my-3 text-sm">{place.data.description}</p>
           </div>
         </article>

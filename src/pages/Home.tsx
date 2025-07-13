@@ -21,7 +21,7 @@ function Home() {
   return (
     <main className="relative">
       <GoToCreate />
-      <div className="mt-15">
+      <div className="mt-2">
         <section>
           <div className="my-1 ml-2 flex items-center">
             <h2 className="text-xl font-bold">New Places</h2>

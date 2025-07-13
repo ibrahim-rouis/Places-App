@@ -39,8 +39,8 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
         } else if (_sortBy == 'POPULAR') {
           q = query(
             q,
-            where('avgRating', '!=', null),
-            orderBy('createdAt', 'desc'),
+            where('uniqueVisits', '!=', null),
+            orderBy('uniqueVisits', 'desc'),
           );
         }
         const docs = await getDocs(q);
