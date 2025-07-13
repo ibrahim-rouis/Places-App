@@ -47,7 +47,7 @@ function Home() {
                   {newPlaces.data.map((place) => (
                     <CarouselItem
                       key={place.id}
-                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
+                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                     >
                       <PlaceCard place={place} />
                     </CarouselItem>
@@ -86,7 +86,7 @@ function Home() {
                   {topRatedPlaces.data.map((place) => (
                     <CarouselItem
                       key={place.id}
-                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
+                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                     >
                       <PlaceCard place={place} />
                     </CarouselItem>
@@ -125,7 +125,7 @@ function Home() {
                   {mostViewedPlaces.data.map((place) => (
                     <CarouselItem
                       key={place.id}
-                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/5"
+                      className="xs:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                     >
                       <PlaceCard place={place} />
                     </CarouselItem>

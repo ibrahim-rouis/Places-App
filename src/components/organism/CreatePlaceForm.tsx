@@ -38,7 +38,7 @@ function CreatePlaceForm() {
   const onSubmit: SubmitHandler<IFormData> = useCallback((data) => {
     setLoading(true);
     createPlace(data)
-      // .then(() => navigate('/'))
+      .then(() => navigate('/'))
       .catch((e) => {
         console.error(e);
         toast.error('Failed to create place.');

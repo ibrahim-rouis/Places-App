@@ -18,10 +18,13 @@ function PlaceCard({ place }: IProps) {
   return (
     <Card
       onClick={() => navigate(`/place/${place.id}`)}
-      className="hover:cursor-pointer"
+      className="flex h-full w-full flex-col hover:cursor-pointer"
     >
-      <CardContent>
-        <img className="aspect-square object-cover" src={place.images[0]} />
+      <CardContent className="flex flex-1 items-center justify-center">
+        <img
+          className="aspect-square h-full object-cover"
+          src={place.images[0]}
+        />
       </CardContent>
       <CardHeader>
         <CardTitle className="text-lg">{place.title}</CardTitle>

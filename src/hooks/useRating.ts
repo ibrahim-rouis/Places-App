@@ -2,19 +2,20 @@ import { auth, db } from '@/services/firebase-services';
 import { collection, getDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const useRating = (
-  placeIDArg: string,
-): [number, (ratingArg: number) => void] => {
+const useRating = (placeID: string): [number, (ratingArg: number) => void] => {
   const userID = useMemo<string>(() => auth.currentUser!.uid, []);
-  const placeID = useMemo<string>(() => placeIDArg, [placeIDArg]);
   const [rating, _setRating] = useState<number>(0);
+
+  const myRatingDoc = useMemo(() => {
+    const placeDoc = doc(collection(db, 'places'), placeID);
+    const ratingsCollection = collection(placeDoc, 'ratings');
+    return doc(ratingsCollection, userID);
+  }, [placeID, userID]);
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const placeDoc = doc(collection(db, 'places'), placeID);
-        const ratingsCollection = collection(placeDoc, 'ratings');
-        const mydoc = await getDoc(doc(ratingsCollection, userID));
+        const mydoc = await getDoc(myRatingDoc);
         if (mydoc.exists()) {
           _setRating(mydoc.data().rating);
         }
@@ -24,7 +25,7 @@ const useRating = (
     };
 
     fetch();
-  }, [userID, placeID]);
+  }, [myRatingDoc]);
 
   const setRating = useCallback(
     (rating: number) => {
@@ -33,10 +34,7 @@ const useRating = (
           if (rating <= 0 || rating > 5) {
             throw Error('Rating must be between 1 and 5');
           }
-          const placeDoc = doc(collection(db, 'places'), placeID);
-          const ratingsCollection = collection(placeDoc, 'ratings');
-          const mydoc = doc(ratingsCollection, userID);
-          await setDoc(mydoc, { rating });
+          await setDoc(myRatingDoc, { rating });
           _setRating(rating);
         } catch (error) {
           console.error(error);
@@ -45,7 +43,7 @@ const useRating = (
 
       fn();
     },
-    [_setRating],
+    [myRatingDoc],
   );
 
   return [rating, setRating];

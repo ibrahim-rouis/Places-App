@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type SortType = 'NEW' | 'TOP' | 'POPULAR';
 
@@ -18,7 +18,6 @@ type SortType = 'NEW' | 'TOP' | 'POPULAR';
  * refresh is a function that can refresh the data for you if not loading
  */
 const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
-  const _sortBy = useMemo(() => sortBy, [sortBy]);
   const [data, setData] = useState<Array<Place> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown | null>(null);
@@ -28,15 +27,15 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
       try {
         const _collection = collection(db, 'places');
         let q = query(_collection, limit(10));
-        if (_sortBy == 'NEW') {
+        if (sortBy == 'NEW') {
           q = query(q, orderBy('createdAt', 'desc'));
-        } else if (_sortBy == 'TOP') {
+        } else if (sortBy == 'TOP') {
           q = query(
             q,
             where('avgRating', '!=', null),
             orderBy('avgRating', 'desc'),
           );
-        } else if (_sortBy == 'POPULAR') {
+        } else if (sortBy == 'POPULAR') {
           q = query(
             q,
             where('uniqueVisits', '!=', null),
@@ -60,7 +59,7 @@ const usePlacesQuery = ({ sortBy }: { sortBy: SortType }) => {
     };
 
     fetch();
-  }, [_sortBy]);
+  }, [sortBy]);
 
   return { data, loading, error };
 };
