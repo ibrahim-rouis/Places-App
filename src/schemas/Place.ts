@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import z from 'zod';
 
 const MAX_FILE_SIZE = 10000000;
@@ -20,8 +21,8 @@ const descriptionSchema = z
 
 const locationSchema = z
   .string()
-  .min(2, 'Location must be at least 10 characters long')
-  .max(35, 'Location must not exceed 255 characters long');
+  .min(2, 'Location must be at least 2 characters long')
+  .max(35, 'Location must not exceed 35 characters long');
 
 export const imageFilesListSchema = z
   .any()
@@ -51,9 +52,27 @@ export const imageFilesListSchema = z
       .max(5, 'You can upload up to 5 images only'),
   );
 
+const imagesUrlsSchema = z.array(z.string());
+const timeStampSchema = z.instanceof(Timestamp);
+const createdAtSchema = timeStampSchema;
+const updatedAtSchema = timeStampSchema.nullable();
+
 export const createPlaceSchema = z.object({
   title: titleSchema,
   description: descriptionSchema,
   location: locationSchema,
   images: imageFilesListSchema,
 });
+
+export const placeDataSchema = z.object({
+  title: titleSchema,
+  description: descriptionSchema,
+  location: locationSchema,
+  images: imagesUrlsSchema,
+  createdAt: createdAtSchema,
+  updatedAt: updatedAtSchema,
+  avgRating: z.number().nullable().optional(),
+  uniqueVisits: z.number().int().nullable().optional(),
+});
+
+export type Place = z.infer<typeof placeDataSchema>;
