@@ -105,7 +105,7 @@ function Place() {
               />
               {isFavorite == false && (
                 <Button
-                  className="mt-2 bg-pink-500 hover:cursor-pointer hover:bg-pink-700"
+                  className="my-2 bg-pink-500 hover:cursor-pointer hover:bg-pink-700"
                   onClick={addToFavorites}
                 >
                   <Heart className="fill-white" />
