@@ -15,9 +15,12 @@ import ViewEmpty from '@/components/molecules/ViewEmpty';
 import ViewError from '@/components/molecules/ViewError';
 
 function Home() {
-  const newPlaces = usePlacesQuery({ sortBy: 'NEW' });
-  const topRatedPlaces = usePlacesQuery({ sortBy: 'TOP' });
-  const mostViewedPlaces = usePlacesQuery({ sortBy: 'POPULAR' });
+  const newPlaces = usePlacesQuery({ sortBy: 'NEW', querylimit: 10 });
+  const topRatedPlaces = usePlacesQuery({ sortBy: 'TOP', querylimit: 10 });
+  const mostViewedPlaces = usePlacesQuery({
+    sortBy: 'POPULAR',
+    querylimit: 10,
+  });
   return (
     <main className="relative">
       <GoToCreate />

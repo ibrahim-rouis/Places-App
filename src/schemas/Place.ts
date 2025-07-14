@@ -80,3 +80,4 @@ export const placeDataSchema = z.object({
 });
 
 export type Place = z.infer<typeof placeDataSchema>;
+export type SortType = 'NEW' | 'TOP' | 'POPULAR';
