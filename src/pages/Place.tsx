@@ -12,16 +12,20 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ViewEmpty from '@/components/molecules/ViewEmpty';
-import { Eye, MapPin } from 'lucide-react';
+import { Eye, Heart, MapPin } from 'lucide-react';
 import { Rating } from '@smastrom/react-rating';
 import useRating from '@/hooks/useRating';
 import useViewPlace from '@/hooks/useViewPlace';
+import { Button } from '@/components/ui/button';
+import useFavorite from '@/hooks/useFavorite';
 
 function Place() {
   const params = useParams();
   const placeID = useMemo(() => params.id!, [params]);
   const place = usePlace(placeID);
   const [rating, setRating] = useRating(placeID);
+  const [isFavorite, addToFavorites] = useFavorite(placeID);
+
   useViewPlace(placeID);
 
   if (place.loading) {
@@ -65,6 +69,9 @@ function Place() {
               <div className="text-muted-foreground flex items-center gap-1">
                 <MapPin className="size-4" />
                 <p>{place.data.location}</p>
+                {isFavorite == true && (
+                  <Heart className="ml-2 fill-pink-500 stroke-pink-700" />
+                )}
               </div>
             </div>
             <div className="flex items-center justify-between px-2 sm:px-1">
@@ -96,6 +103,15 @@ function Place() {
                 value={rating}
                 onChange={(rating: number) => setRating(rating)}
               />
+              {isFavorite == false && (
+                <Button
+                  className="mt-2 bg-pink-500 hover:cursor-pointer hover:bg-pink-700"
+                  onClick={addToFavorites}
+                >
+                  <Heart className="fill-white" />
+                  <span>Add To Favorites</span>
+                </Button>
+              )}
             </div>
           </div>
         </article>

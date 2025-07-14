@@ -13,6 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import ViewLoading from '@/components/molecules/ViewLoading';
+import ViewError from '@/components/molecules/ViewError';
+import ViewEmpty from '@/components/molecules/ViewEmpty';
 
 function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,8 +69,12 @@ function Explore() {
           </Select>
         </div>
       </aside>
+      {places.loading && <ViewLoading />}
+      {places.error != null && <ViewError />}
+      {places.data && places.data.length == 0 && <ViewEmpty />}
       <section className="xs:grid-cols-2 grid grid-cols-1 justify-center gap-2 lg:grid-cols-3 xl:grid-cols-4">
         {places.data &&
+          places.data.length >= 0 &&
           places.data.map((place) => (
             <PlaceCard key={place.id} place={place} />
           ))}

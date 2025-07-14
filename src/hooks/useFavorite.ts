@@ -1,0 +1,56 @@
+import { auth, db } from '@/services/firebase-services';
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+const useFavorite = (
+  placeID: string,
+): [boolean | null, () => Promise<void>] => {
+  const userID = useMemo(() => auth.currentUser!.uid, []);
+  const [isFavorite, setFavorite] = useState<boolean | null>(null);
+  const favDoc = useMemo(
+    () => doc(collection(db, 'favorites'), userID),
+    [userID],
+  );
+
+  useEffect(() => {
+    const fn = async () => {
+      try {
+        const docRef = await getDoc(favDoc);
+        if (docRef.exists()) {
+          if (docRef.data().favorites.includes(placeID)) {
+            setFavorite(true);
+          } else {
+            setFavorite(false);
+          }
+        } else {
+          await setDoc(favDoc, { favorites: [] });
+          setFavorite(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fn();
+  }, [placeID, favDoc]);
+
+  const addToFavorite = useCallback(async () => {
+    try {
+      await updateDoc(favDoc, { favorites: arrayUnion(placeID) });
+      setFavorite(true);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [placeID, favDoc]);
+
+  return [isFavorite, addToFavorite];
+};
+
+export default useFavorite;
