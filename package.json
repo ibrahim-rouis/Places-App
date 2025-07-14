@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently 'npm run emulators:start' 'npm run vite:dev'",
-    "emulators:start": "firebase emulators:start --export-on-exit=./emulators-data --import=./emulators-data",
+    "emulators:start": "firebase emulators:start --project demo-project --export-on-exit=./emulators-data --import=./emulators-data",
     "vite:dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
