@@ -17,7 +17,7 @@ const titleSchema = z
 const descriptionSchema = z
   .string()
   .min(10, 'Description must be at least 10 characters long')
-  .max(255, 'Description must not exceed 255 characters long');
+  .max(1024, 'Description must not exceed 1024 characters long');
 
 const locationSchema = z
   .string()

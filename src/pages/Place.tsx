@@ -33,7 +33,7 @@ function Place() {
   } else {
     return (
       <main>
-        <article className="mx-auto max-w-lg">
+        <article className="mx-auto max-w-2xl">
           <div className="flex justify-center sm:p-14">
             <Carousel
               className="bg-muted w-full max-w-lg rounded-lg p-1"

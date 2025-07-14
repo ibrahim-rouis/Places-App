@@ -28,7 +28,7 @@ function Home() {
         <section>
           <div className="my-1 ml-2 flex items-center">
             <h2 className="text-xl font-bold">New Places</h2>
-            <ButtonLink to="/explore" title="Show more" />
+            <ButtonLink to="/explore?sort=NEW" title="Show more" />
           </div>
           <div className="md:px-10">
             {newPlaces.loading && <ViewLoading />}
@@ -65,7 +65,7 @@ function Home() {
         <section className="mt-4">
           <div className="my-1 ml-2 flex items-center">
             <h2 className="text-xl font-bold">Top Rated</h2>
-            <ButtonLink to="/" title="Show more" />
+            <ButtonLink to="/explore?sort=TOP" title="Show more" />
           </div>
           <div className="md:px-10">
             {topRatedPlaces.loading && <ViewLoading />}
@@ -104,7 +104,7 @@ function Home() {
         <section className="mt-4">
           <div className="my-1 ml-2 flex items-center">
             <h2 className="text-xl font-bold">Most Popular</h2>
-            <ButtonLink to="/" title="Show more" />
+            <ButtonLink to="/explore?sort=POPULAR" title="Show more" />
           </div>
           <div className="md:px-10">
             {mostViewedPlaces.loading && <ViewLoading />}

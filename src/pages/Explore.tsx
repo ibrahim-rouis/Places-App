@@ -2,7 +2,7 @@ import PlaceCard from '@/components/molecules/PlaceCard';
 import { Input } from '@/components/ui/input';
 import usePlacesQuery from '@/hooks/usePlacesQuery';
 import { type SortType } from '@/schemas/Place';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import {
   Select,
@@ -17,7 +17,10 @@ import {
 function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryText = useMemo(() => searchParams.get('q') ?? '', [searchParams]);
-  const [sortBy, setSortBy] = useState<SortType>('NEW');
+  const sortBy = useMemo<SortType>(
+    () => (searchParams.get('sort') as SortType) ?? 'NEW',
+    [searchParams],
+  );
   const places = usePlacesQuery({
     textQuery: queryText,
     sortBy: sortBy,
@@ -39,10 +42,15 @@ function Explore() {
           placeholder="Search"
         />
         <div className="mt-2 flex items-center gap-2 lg:mt-0 lg:ml-4">
-          <label htmlFor="sortyBy">Sort by: </label>
+          <label htmlFor="sortyBy">Sort by:</label>
           <Select
             value={sortBy}
-            onValueChange={(value) => setSortBy(value as SortType)}
+            onValueChange={(value) =>
+              setSearchParams((searchParams) => {
+                searchParams.set('sort', value);
+                return searchParams;
+              })
+            }
           >
             <SelectTrigger className="">
               <SelectValue placeholder="Sort by" />
