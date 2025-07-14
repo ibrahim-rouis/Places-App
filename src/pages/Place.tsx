@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ViewEmpty from '@/components/molecules/ViewEmpty';
-import { MapPin } from 'lucide-react';
+import { Eye, MapPin } from 'lucide-react';
 import { Rating } from '@smastrom/react-rating';
 import useRating from '@/hooks/useRating';
 import useViewPlace from '@/hooks/useViewPlace';
@@ -67,23 +67,35 @@ function Place() {
                 <p>{place.data.location}</p>
               </div>
             </div>
-            <Rating
-              className="max-w-36 md:max-w-50"
-              value={rating}
-              onChange={(rating: number) => setRating(rating)}
-            />
-            <p className="my-3 text-sm">{place.data.description}</p>
-            <div>
-              <p>
-                Average rating:{' '}
-                {place.data.avgRating
-                  ? place.data.avgRating.toFixed(1)
-                  : 'Not rated'}
+            <div className="flex items-center justify-between px-2 sm:px-1">
+              {place.data.avgRating ? (
+                <div className="flex items-center gap-1">
+                  <Rating
+                    value={place.data.avgRating}
+                    readOnly
+                    className="max-w-36 md:max-w-50"
+                  />
+                  <p className="text-base">{place.data.avgRating.toFixed(1)}</p>
+                </div>
+              ) : (
+                <span className="text-muted">Not rated yet.</span>
+              )}
+              <p className="xs:text-base flex items-center gap-2 text-sm">
+                <Eye className="xs:size-7 size-5" />
+                <span>
+                  {place.data.uniqueVisits ? place.data.uniqueVisits : 0}
+                </span>
               </p>
-              <p>
-                Unique Views:{' '}
-                {place.data.uniqueVisits ? place.data.uniqueVisits : 0}
-              </p>
+            </div>
+            <p className="my-3 text-base">{place.data.description}</p>
+            <hr className="my-2" />
+            <div className="flex flex-col items-center justify-center gap-2">
+              <p>Rate this place</p>
+              <Rating
+                className="max-w-36 md:max-w-50"
+                value={rating}
+                onChange={(rating: number) => setRating(rating)}
+              />
             </div>
           </div>
         </article>

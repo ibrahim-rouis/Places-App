@@ -31,25 +31,28 @@ function RegisterForm() {
   // Singning up state
   const [loading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<IFormData> = useCallback((data) => {
-    if (data.password !== data.confirmPassword) {
-      form.setError('confirmPassword', {
-        message: "Confirm password doesn't match",
-      });
-      return;
-    }
-    setLoading(true);
-    registerUser(data.email, data.password)
-      .catch((e) => {
-        console.error(e);
-        if (e.code == 'auth/email-already-in-use') {
-          toast.error('Email already registered');
-        } else {
-          toast.error('Unknown error occured.');
-        }
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  const onSubmit: SubmitHandler<IFormData> = useCallback(
+    (data) => {
+      if (data.password !== data.confirmPassword) {
+        form.setError('confirmPassword', {
+          message: "Confirm password doesn't match",
+        });
+        return;
+      }
+      setLoading(true);
+      registerUser(data.email, data.password)
+        .catch((e) => {
+          console.error(e);
+          if (e.code == 'auth/email-already-in-use') {
+            toast.error('Email already registered');
+          } else {
+            toast.error('Unknown error occured.');
+          }
+        })
+        .finally(() => setLoading(false));
+    },
+    [form],
+  );
 
   return (
     <Form {...form}>

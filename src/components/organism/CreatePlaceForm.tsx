@@ -35,18 +35,21 @@ function CreatePlaceForm() {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<IFormData> = useCallback((data) => {
-    setLoading(true);
-    createPlace(data)
-      .then(() => navigate('/'))
-      .catch((e) => {
-        console.error(e);
-        toast.error('Failed to create place.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const onSubmit: SubmitHandler<IFormData> = useCallback(
+    (data) => {
+      setLoading(true);
+      createPlace(data)
+        .then(() => navigate('/'))
+        .catch((e) => {
+          console.error(e);
+          toast.error('Failed to create place.');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [navigate],
+  );
 
   return (
     <Form {...form}>

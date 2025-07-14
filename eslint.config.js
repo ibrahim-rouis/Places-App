@@ -19,8 +19,6 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    rules: {
-      '@typescript/no-unused-vars': 'warn',
-    },
+    rules: {},
   },
 ]);

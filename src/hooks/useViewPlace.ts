@@ -6,7 +6,7 @@ const useViewPlace = (placeId: string) => {
   const userID = useMemo(() => auth.currentUser!.uid, []);
   const myViewDoc = useMemo(() => {
     return doc(collection(db, `places/${placeId}/views`), userID);
-  }, [placeId]);
+  }, [placeId, userID]);
 
   useEffect(() => {
     const setViewed = async () => {
