@@ -16,6 +16,17 @@ Places App is a modern web application where users can discover and share intere
 
 - State Management — Uses Zustand for scalable global state
 
+## How to run
+
+> [!IMPORTANT]
+> This project requires Node.js (v18+), npm and Firebase CLI installed on your system.
+
+To run the project simply type:
+
+    npm run dev
+
+Wait for the Firebase Emulator to start and visit http://localhost:5173
+
 ## Tech Stack
 
 - Frontend: React, TypeScript, Tailwind CSS, React Hook Form, Zustand, shadcn & more
