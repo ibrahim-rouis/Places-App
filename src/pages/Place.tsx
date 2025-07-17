@@ -24,7 +24,8 @@ function Place() {
   const placeID = useMemo(() => params.id!, [params]);
   const place = usePlace(placeID);
   const [rating, setRating] = useRating(placeID);
-  const [isFavorite, addToFavorites] = useFavorite(placeID);
+  const [isFavorite, addToFavorites, removeFromFavorites] =
+    useFavorite(placeID);
 
   useViewPlace(placeID);
 
@@ -70,7 +71,10 @@ function Place() {
                 <MapPin className="size-4" />
                 <p>{place.data.location}</p>
                 {isFavorite == true && (
-                  <Heart className="ml-2 fill-pink-500 stroke-pink-700" />
+                  <Heart
+                    className="ml-2 fill-pink-500 stroke-pink-700 hover:cursor-pointer hover:fill-pink-300"
+                    onClick={removeFromFavorites}
+                  />
                 )}
               </div>
             </div>

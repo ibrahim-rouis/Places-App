@@ -1,5 +1,6 @@
 import { auth, db } from '@/services/firebase-services';
 import {
+  arrayRemove,
   arrayUnion,
   collection,
   doc,
@@ -11,7 +12,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const useFavorite = (
   placeID: string,
-): [boolean | null, () => Promise<void>] => {
+): [boolean | null, () => Promise<void>, () => Promise<void>] => {
   const userID = useMemo(() => auth.currentUser!.uid, []);
   const [isFavorite, setFavorite] = useState<boolean | null>(null);
   const favDoc = useMemo(
@@ -50,7 +51,16 @@ const useFavorite = (
     }
   }, [placeID, favDoc]);
 
-  return [isFavorite, addToFavorite];
+  const removeFromFavorites = useCallback(async () => {
+    try {
+      await updateDoc(favDoc, { favorites: arrayRemove(placeID) });
+      setFavorite(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [placeID, favDoc]);
+
+  return [isFavorite, addToFavorite, removeFromFavorites];
 };
 
 export default useFavorite;
