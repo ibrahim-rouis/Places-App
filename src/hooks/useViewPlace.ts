@@ -1,9 +1,10 @@
-import { auth, db } from '@/services/firebase-services';
+import { db } from '@/services/firebase-services';
+import { useAuthStore } from '@/store/useAuthStore';
 import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 
 const useViewPlace = (placeId: string) => {
-  const userID = useMemo(() => auth.currentUser!.uid, []);
+  const userID = useAuthStore((state) => state.user?.uid);
   const myViewDoc = useMemo(() => {
     return doc(collection(db, `places/${placeId}/views`), userID);
   }, [placeId, userID]);

@@ -1,4 +1,5 @@
-import { auth, db } from '@/services/firebase-services';
+import { db } from '@/services/firebase-services';
+import { useAuthStore } from '@/store/useAuthStore';
 import {
   arrayRemove,
   arrayUnion,
@@ -13,7 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 const useFavorite = (
   placeID: string,
 ): [boolean | null, () => Promise<void>, () => Promise<void>] => {
-  const userID = useMemo(() => auth.currentUser!.uid, []);
+  const userID = useAuthStore((state) => state.user?.uid);
   const [isFavorite, setFavorite] = useState<boolean | null>(null);
   const favDoc = useMemo(
     () => doc(collection(db, 'favorites'), userID),

@@ -1,13 +1,12 @@
 import { placeDataSchema, type Place } from '@/schemas/Place';
 import { db } from '@/services/firebase-services';
 import { collection, doc, getDoc } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Get place by ID
  */
-const usePlace = (placeIDArg: string) => {
-  const PlaceID = useMemo(() => placeIDArg, [placeIDArg]);
+const usePlace = (placeID: string) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown | null>(null);
   const [data, setData] = useState<Place | null>(null);
@@ -15,7 +14,7 @@ const usePlace = (placeIDArg: string) => {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const mydoc = await getDoc(doc(collection(db, 'places'), PlaceID));
+        const mydoc = await getDoc(doc(collection(db, 'places'), placeID));
         if (mydoc.exists()) {
           const data = mydoc.data();
           data.id = mydoc.id;
@@ -32,7 +31,7 @@ const usePlace = (placeIDArg: string) => {
     };
 
     fetchPlace();
-  }, [PlaceID]);
+  }, [placeID]);
 
   return { loading, error, data };
 };

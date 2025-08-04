@@ -1,9 +1,10 @@
-import { auth, db } from '@/services/firebase-services';
+import { db } from '@/services/firebase-services';
+import { useAuthStore } from '@/store/useAuthStore';
 import { collection, getDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const useRating = (placeID: string): [number, (ratingArg: number) => void] => {
-  const userID = useMemo<string>(() => auth.currentUser!.uid, []);
+  const userID = useAuthStore((state) => state.user?.uid);
   const [rating, _setRating] = useState<number>(0);
 
   const myRatingDoc = useMemo(() => {

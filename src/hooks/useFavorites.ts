@@ -1,10 +1,11 @@
 import { placeDataSchema, type Place } from '@/schemas/Place';
-import { auth, db } from '@/services/firebase-services';
+import { db } from '@/services/firebase-services';
+import { useAuthStore } from '@/store/useAuthStore';
 import { collection, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 
 const useFavorites = () => {
-  const userID = useMemo(() => auth.currentUser!.uid, []);
+  const userID = useAuthStore((state) => state.user?.uid);
   const favoritesDoc = useMemo(() => {
     return doc(collection(db, 'favorites'), userID);
   }, [userID]);
